@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lençóis Maranhenses 2027 — O deserto azul do Brasil | RoadTrip021</title>
+<meta name="description" content="Dunas de areia branca e lagoas cristalinas nos Lençóis Maranhenses. 7 dias com aéreo, hospedagem, transfers e guia inclusos. 4 saídas em 2027 — fale com um especialista.">
+
+<!-- =========================================================
+     CONFIG (edite só estas duas linhas):
+     WHATSAPP  -> 55 + DDD + número (só dígitos)
+     SHEETS_URL-> URL do Google Apps Script (instruções no .md)
+========================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --orange:#F26A1B;        /* marca RoadTrip021 */
+  --orange-2:#FF8A3D;
+  --orange-dark:#D4521A;
+  --lagoon:#16A6C9;        /* lagoas dos Lençóis */
+  --lagoon-deep:#0C6E86;
+  --navy:#152230;          /* seções e texto escuro */
+  --navy-deep:#0E1822;
+  --sand:#F7EFE2;
+  --cream:#FCF9F3;
+  --ink:#1B2430;
+  --ink-soft:#4A5560;
+  --wa:#1FAE54;
+  --line:rgba(21,34,48,.12);
+  --shadow:0 24px 60px -28px rgba(14,24,34,.5);
+  --radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Mulish',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{line-height:1.1;font-weight:800}
+.anton{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1140px,92vw);margin-inline:auto}
+
+/* Botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;font-family:'Mulish';font-weight:800;font-size:1rem;padding:1rem 1.7rem;border-radius:999px;border:none;cursor:pointer;transition:transform .22s,box-shadow .22s,background .22s;line-height:1;text-align:center}
+.btn svg{width:19px;height:19px;flex:none}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 12px 26px -10px rgba(31,174,84,.6)}
+.btn-wa:hover{transform:translateY(-3px);box-shadow:0 18px 36px -12px rgba(31,174,84,.7)}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 12px 26px -12px rgba(242,106,27,.65)}
+.btn-orange:hover{transform:translateY(-3px);background:var(--orange-dark)}
+.btn-ghost{background:transparent;border:1.6px solid rgba(255,255,255,.55);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.btn-line{background:#fff;border:1.6px solid var(--line);color:var(--ink)}
+.btn-line:hover{border-color:var(--orange);color:var(--orange-dark)}
+
+/* Header — barra fina (~1cm), escura, alinhada */
+header{position:sticky;top:0;z-index:60;background:#0E1822;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:42px}      /* ~1.1cm; pode baixar pra 38px */
+.brand-logo{height:28px;width:auto;display:block}                                     /* tamanho visível da logo */
+.brand-fallback{display:none;font-family:'Anton';font-size:1.25rem;letter-spacing:1px;line-height:1}
+.brand-fallback .b1{color:#fff} .brand-fallback .b2{color:var(--orange)}
+.nav .btn{padding:.45rem 1rem;font-size:.82rem}
+@media(max-width:600px){
+  .nav{height:42px}                                                                   /* mesma barra no mobile */
+  .brand-logo{height:26px}
+  .nav .btn span{display:none}
+  .nav .btn{padding:.45rem .8rem}
+}
+
+/* Hero */
+.hero{position:relative;color:#fff;overflow:hidden;padding:clamp(3.5rem,8vw,6.5rem) 0 clamp(4rem,9vw,7rem);
+  background:linear-gradient(180deg,rgba(12,110,134,.55) 0%,rgba(14,24,34,.78) 100%),linear-gradient(120deg,#16A6C9,#0C6E86)}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;mix-blend-mode:soft-light;opacity:.55;
+  background-image:url("https://images.unsplash.com/photo-1682687220015-186f63b8850a?auto=format&fit=crop&w=1600&q=80");
+  background-size:cover;background-position:center}
+.hero .wrap{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--orange);padding:.45rem 1rem;border-radius:999px;font-size:.82rem;font-weight:800;letter-spacing:.5px;margin-bottom:1.3rem;text-transform:uppercase}
+.hero h1{font-size:clamp(2.7rem,8vw,5.8rem);max-width:13ch}
+.hero h1 .anton{display:block}
+.hero h1 .sm{font-family:'Mulish';font-weight:800;font-size:clamp(1rem,2.4vw,1.5rem);letter-spacing:3px;text-transform:uppercase;color:var(--orange-2);display:block;margin-bottom:.4rem}
+.hero .sub{font-size:clamp(1.05rem,2.1vw,1.3rem);max-width:48ch;margin-top:1.2rem;color:rgba(255,255,255,.94);font-weight:500}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center;margin-top:2rem}
+.hero-proof{display:flex;flex-wrap:wrap;gap:1.6rem;margin-top:2.4rem;padding-top:1.6rem;border-top:1px solid rgba(255,255,255,.2)}
+.hero-proof div{font-size:.9rem;color:rgba(255,255,255,.85)}
+.hero-proof b{display:block;font-family:'Anton';font-size:1.7rem;color:#fff;letter-spacing:.5px}
+
+/* Faixa de inclusos (igual aos cards do site) */
+.incl-strip{background:var(--orange);color:#fff;padding:1.1rem 0}
+.incl-strip .wrap{display:flex;flex-wrap:wrap;gap:.7rem 1.8rem;justify-content:center;align-items:center}
+.incl-strip span{display:inline-flex;align-items:center;gap:.5rem;font-weight:800;font-size:.98rem}
+
+/* Seções */
+section{padding:clamp(3.4rem,7vw,5.5rem) 0}
+.eyebrow{display:inline-block;font-weight:900;font-size:.8rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem}
+.section-title{font-family:'Anton';font-size:clamp(2rem,5vw,3.3rem);letter-spacing:.5px;max-width:20ch;color:var(--navy)}
+.section-lead{font-size:1.1rem;color:var(--ink-soft);max-width:54ch;margin-top:.9rem}
+
+/* Experiências */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2.6rem}
+@media(max-width:880px){.exp-grid{grid-template-columns:1fr}}
+.exp{position:relative;border-radius:var(--radius);overflow:hidden;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;box-shadow:var(--shadow);isolation:isolate;background:linear-gradient(160deg,#16A6C9,#0C6E86)}
+.exp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.exp::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(14,24,34,0) 35%,rgba(14,24,34,.55) 62%,rgba(14,24,34,.92) 100%)}
+.exp-body{padding:1.7rem}
+.exp-num{font-family:'Anton';font-size:.95rem;color:var(--orange-2);letter-spacing:1px}
+.exp h3{font-size:1.55rem;margin:.3rem 0 .5rem;font-family:'Anton';letter-spacing:.5px}
+.exp p{font-size:.96rem;color:rgba(255,255,255,.9)}
+
+/* DATAS */
+.dates{background:var(--navy);color:#fff}
+.dates .section-title{color:#fff}
+.dates-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:2.6rem}
+@media(max-width:760px){.dates-grid{grid-template-columns:1fr}}
+.date-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:1.6rem;transition:.25s;position:relative;overflow:hidden}
+.date-card:hover{border-color:var(--orange);background:rgba(255,255,255,.09);transform:translateY(-3px)}
+.date-off{position:absolute;top:1.1rem;right:1.1rem;background:var(--orange);color:#fff;font-weight:900;font-size:.78rem;padding:.3rem .7rem;border-radius:999px;letter-spacing:.5px}
+.date-when{font-family:'Anton';font-size:1.5rem;letter-spacing:.5px}
+.date-month{font-weight:900;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange-2);margin-bottom:.3rem}
+.date-price{margin:1rem 0 1.2rem}
+.date-price .old{font-size:.9rem;color:rgba(255,255,255,.55);text-decoration:line-through}
+.date-price .inst{font-family:'Anton';font-size:1.45rem;color:#fff;letter-spacing:.5px}
+.date-price .inst small{font-family:'Mulish';font-weight:700;font-size:.95rem}
+.date-price .cash{font-size:.92rem;color:rgba(255,255,255,.78)}
+.date-actions{display:flex;flex-wrap:wrap;gap:.6rem}
+.date-actions .btn{padding:.7rem 1.2rem;font-size:.88rem;flex:1;min-width:130px}
+
+/* INCLUSO */
+.inc-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:1.5rem;margin-top:2.6rem;align-items:start}
+@media(max-width:820px){.inc-grid{grid-template-columns:1fr}}
+.card-inc{background:#fff;border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);border:1px solid var(--line)}
+.card-inc h3{font-size:1.35rem;margin-bottom:1.1rem;display:flex;align-items:center;gap:.5rem;color:var(--navy)}
+.inc-list{list-style:none;display:grid;gap:.7rem}
+.inc-list li{display:flex;gap:.7rem;font-size:1rem;align-items:flex-start}
+.inc-list .ic{flex:none;width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:#fff;margin-top:3px}
+.inc-yes .ic{background:var(--wa)} .inc-no .ic{background:var(--orange)}
+.inc-no{background:#FFF4EC} .inc-no li{color:var(--ink-soft)}
+
+/* PREÇO */
+.preco{background:linear-gradient(135deg,var(--lagoon) 0%,var(--lagoon-deep) 100%);color:#fff;text-align:center}
+.preco .section-title{color:#fff;margin-inline:auto}
+.preco-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:clamp(2rem,5vw,3.2rem);max-width:620px;margin:2.2rem auto 0;backdrop-filter:blur(8px)}
+.preco .old{font-size:1rem;color:rgba(255,255,255,.7);text-decoration:line-through}
+.preco .big{font-family:'Anton';font-size:clamp(2.6rem,7vw,4rem);color:#fff;line-height:1.05;margin:.2rem 0;letter-spacing:.5px}
+.preco .big small{font-size:1.3rem}
+.preco .cash{font-size:1.05rem;color:rgba(255,255,255,.92)}
+.preco .pills{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin:1.5rem 0 1.9rem}
+.preco .pills span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:.42rem 1rem;border-radius:999px;font-size:.86rem;font-weight:700}
+.off-tag{display:inline-block;background:var(--orange);color:#fff;font-weight:900;padding:.3rem .9rem;border-radius:999px;font-size:.85rem;letter-spacing:.5px;margin-bottom:.6rem}
+
+/* PROVA SOCIAL */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.6rem}
+@media(max-width:780px){.trust-grid{grid-template-columns:1fr}}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.7rem}
+.stars{color:var(--orange);font-size:1.05rem;letter-spacing:2px;margin-bottom:.7rem}
+.tcard p{font-size:1rem;color:var(--ink-soft)}
+.tcard .who{margin-top:.9rem;font-weight:800;font-size:.92rem;color:var(--navy)}
+
+/* FAQ */
+.faq{background:var(--sand)}
+.faq-item{background:#fff;border-radius:14px;margin-top:.9rem;overflow:hidden;border:1px solid var(--line)}
+.faq-item summary{cursor:pointer;padding:1.25rem 1.5rem;font-weight:800;font-size:1.04rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;color:var(--navy)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"+";font-family:'Anton';font-size:1.5rem;color:var(--orange);transition:.3s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item p{padding:0 1.5rem 1.3rem;color:var(--ink-soft)}
+
+/* CTA final */
+.final{background:var(--navy);color:#fff;text-align:center}
+.final .section-title{color:#fff;margin-inline:auto}
+.final p{max-width:46ch;margin:1rem auto 1.8rem;color:rgba(255,255,255,.85);font-size:1.1rem}
+
+/* Footer */
+footer{background:var(--navy-deep);color:rgba(255,255,255,.7);padding:3rem 0 2.2rem;font-size:.92rem;text-align:center}
+footer .brand{display:flex;justify-content:center;gap:.35rem;font-family:'Anton';font-size:1.3rem;letter-spacing:1px;margin-bottom:1rem}
+footer .brand .b1{color:#fff} footer .brand .b2{color:var(--orange)}
+footer a{color:var(--orange-2)}
+
+/* Barra fixa mobile */
+.mobile-cta{position:fixed;bottom:0;left:0;right:0;z-index:80;padding:.65rem 1rem;background:rgba(252,249,243,.96);border-top:1px solid var(--line);backdrop-filter:blur(10px);display:none}
+.mobile-cta .btn{width:100%}
+@media(max-width:600px){.mobile-cta{display:block}body{padding-bottom:78px}}
+
+/* ===== MODAL ===== */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(14,24,34,.72);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:1.1rem}
+.modal-overlay.open{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal-card{background:var(--cream);border-radius:22px;width:min(560px,100%);max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 40px 90px -30px rgba(0,0,0,.6);animation:pop .3s cubic-bezier(.2,.9,.3,1.1)}
+@keyframes pop{from{transform:translateY(24px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.modal-close{position:absolute;top:.9rem;right:.9rem;z-index:3;width:38px;height:38px;border-radius:50%;border:none;background:rgba(21,34,48,.08);font-size:1.4rem;cursor:pointer;color:var(--navy);line-height:1;transition:.2s}
+.modal-close:hover{background:var(--orange);color:#fff}
+.pane{display:none}
+.pane.active{display:block}
+
+/* Pane roteiro */
+.mhead{background:var(--navy);color:#fff;padding:1.8rem 1.8rem 1.5rem}
+.mhead .anton{font-size:1.5rem;letter-spacing:.5px}
+.mhead .mdate{color:var(--orange-2);font-weight:900;letter-spacing:1px;font-size:.85rem;text-transform:uppercase;margin-bottom:.3rem}
+.mbody{padding:1.6rem 1.8rem}
+.rt-day{display:grid;grid-template-columns:auto 1fr;gap:1rem;padding:.7rem 0;border-bottom:1px dashed var(--line)}
+.rt-day:last-child{border-bottom:none}
+.rt-num{background:var(--lagoon);color:#fff;font-family:'Anton';width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none;font-size:1.1rem}
+.rt-day h5{font-size:1rem;color:var(--navy);margin-bottom:.15rem}
+.rt-day p{font-size:.92rem;color:var(--ink-soft)}
+.mbody .btn{width:100%;margin-top:1.3rem}
+
+/* Pane form */
+.fhead{text-align:center;padding:1.9rem 1.8rem 0}
+.fhead .anton{font-size:1.5rem;color:var(--navy);letter-spacing:.5px}
+.fhead p{color:var(--ink-soft);margin-top:.5rem;font-size:.96rem}
+.fdate-chip{display:inline-flex;align-items:center;gap:.4rem;background:#FFF4EC;border:1px solid rgba(242,106,27,.3);color:var(--orange-dark);font-weight:800;padding:.45rem .9rem;border-radius:999px;font-size:.88rem;margin-top:.9rem}
+.lead-form{padding:1.4rem 1.8rem 1.9rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-weight:800;font-size:.86rem;margin-bottom:.4rem;color:var(--navy)}
+.field input,.field select{width:100%;padding:.95rem 1.05rem;border:1.6px solid var(--line);border-radius:12px;font-family:'Mulish';font-size:1rem;background:#fff;transition:.2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 4px rgba(242,106,27,.13)}
+.lead-form .btn{width:100%;margin-top:.3rem}
+.form-note{font-size:.8rem;color:var(--ink-soft);text-align:center;margin-top:.9rem}
+.form-status{text-align:center;font-weight:800;margin-top:.8rem;min-height:1.1rem;color:var(--lagoon-deep)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" aria-label="RoadTrip021">
+      <img src="roadtrip021-logo.png" alt="RoadTrip021" class="brand-logo"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="brand-fallback"><span class="b1">ROADTRIP</span><span class="b2">021</span></span>
+    </a>
+    <button class="btn btn-orange js-vaga"><span>Garantir minha vaga</span><svg viewBox="0 0 24 24" fill="currentColor" style="display:inline"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6L5.7 21l2.3-7.4-6-4.6h7.6z"/></svg></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-badge">🌊 4 saídas em 2027 • Vagas limitadas</span>
+    <h1>
+      <span class="sm">Expedição</span>
+      <span class="anton">Lençóis</span>
+      <span class="anton">Maranhenses</span>
+    </h1>
+    <p class="sub">Dunas de areia branca que se encontram com lagoas cristalinas. O deserto azul do Brasil — vivido com todo o conforto e segurança da RoadTrip021.</p>
+    <div class="hero-cta">
+      <button class="btn btn-orange js-vaga">Quero minha vaga</button>
+      <a href="#datas" class="btn btn-ghost">Ver datas disponíveis</a>
+    </div>
+    <div class="hero-proof">
+      <div><b>+10 mil</b>viajantes com a gente</div>
+      <div><b>5 anos</b>de estrada pelo Brasil</div>
+      <div><b>7 dias</b>de expedição completa</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAIXA INCLUSOS (estilo dos cards do site) ============ -->
+<div class="incl-strip">
+  <div class="wrap">
+    <span>✈️ Passagem aérea</span>
+    <span>🎒 Bagagem 10kg</span>
+    <span>🏨 Hospedagem</span>
+    <span>📍 Passeios inclusos</span>
+    <span>🧭 Guia RoadTrip021</span>
+  </div>
+</div>
+
+<!-- ============ EXPERIÊNCIAS ============ -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">O que você vai viver</span>
+    <h2 class="section-title reveal">Um paraíso natural a cada dia</h2>
+    <p class="section-lead reveal">Um dos destinos mais desejados do ecoturismo brasileiro — lagoas, dunas e vilas charmosas, tudo com guia e logística resolvidos pra você só aproveitar.</p>
+    <div class="exp-grid">
+      <article class="exp reveal">
+        <!-- TROCAR: foto real da Lagoa Azul/Bonita da RoadTrip021 -->
+        <img src="https://images.unsplash.com/photo-1682687220015-186f63b8850a?auto=format&fit=crop&w=900&q=80" alt="Lagoa Azul e Lagoa Bonita" onerror="this.style.display='none'">
+        <div class="exp-body"><span class="exp-num">01</span><h3>Lagoa Azul & Bonita</h3><p>As piscinas naturais mais famosas do parque, entre dunas infinitas de areia branca. Tempo livre pra nadar, fotografar e relaxar.</p></div>
+      </article>
+      <article class="exp reveal">
+        <!-- TROCAR: foto real de Atins / passeio de barco -->
+        <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=900&q=80" alt="Atins e Caburé" onerror="this.style.display='none'">
+        <div class="exp-body"><span class="exp-num">02</span><h3>Atins & Caburé</h3><p>A vila charmosa de Atins com passeio de barco e a emocionante trilha de quadriciclo pelas dunas até Caburé.</p></div>
+      </article>
+      <article class="exp reveal">
+        <!-- TROCAR: foto real de Santo Amaro -->
+        <img src="https://images.unsplash.com/photo-1547234935-80c7145ec969?auto=format&fit=crop&w=900&q=80" alt="Santo Amaro" onerror="this.style.display='none'">
+        <div class="exp-body"><span class="exp-num">03</span><h3>Santo Amaro</h3><p>Uma das partes mais preservadas do parque — um refúgio natural intocado pra se conectar de verdade com o deserto azul.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATAS ============ -->
+<section class="dates" id="datas">
+  <div class="wrap">
+    <span class="eyebrow reveal">Saídas 2027</span>
+    <h2 class="section-title reveal">Escolha a data da sua expedição</h2>
+    <p class="section-lead reveal" style="color:rgba(255,255,255,.82)">Veja o roteiro de cada saída e fale com um especialista. Vagas limitadas por data — o valor promocional é por tempo limitado.</p>
+    <div class="dates-grid" id="datesGrid">
+      <!-- Card 1 -->
+      <div class="date-card reveal">
+        <span class="date-off">-18% OFF</span>
+        <div class="date-month">Maio 2027</div>
+        <div class="date-when">25/05 → 31/05</div>
+        <div class="date-price">
+          <div class="old">de R$7.200,00</div>
+          <div class="inst">12x <small>de</small> R$490,83</div>
+          <div class="cash">ou R$5.890,00 à vista</div>
+        </div>
+        <div class="date-actions">
+          <button class="btn btn-line js-roteiro" data-data="25/05 a 31/05 de 2027">Ver roteiro</button>
+          <button class="btn btn-wa js-quero" data-data="25/05 a 31/05 de 2027">Quero esta</button>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="date-card reveal">
+        <span class="date-off">-18% OFF</span>
+        <div class="date-month">Julho 2027</div>
+        <div class="date-when">24/07 → 30/07</div>
+        <div class="date-price">
+          <div class="old">de R$7.200,00</div>
+          <div class="inst">12x <small>de</small> R$490,83</div>
+          <div class="cash">ou R$5.890,00 à vista</div>
+        </div>
+        <div class="date-actions">
+          <button class="btn btn-line js-roteiro" data-data="24/07 a 30/07 de 2027">Ver roteiro</button>
+          <button class="btn btn-wa js-quero" data-data="24/07 a 30/07 de 2027">Quero esta</button>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="date-card reveal">
+        <span class="date-off">-18% OFF</span>
+        <div class="date-month">Agosto 2027</div>
+        <div class="date-when">01/08 → 07/08</div>
+        <div class="date-price">
+          <div class="old">de R$7.200,00</div>
+          <div class="inst">12x <small>de</small> R$490,83</div>
+          <div class="cash">ou R$5.890,00 à vista</div>
+        </div>
+        <div class="date-actions">
+          <button class="btn btn-line js-roteiro" data-data="01/08 a 07/08 de 2027">Ver roteiro</button>
+          <button class="btn btn-wa js-quero" data-data="01/08 a 07/08 de 2027">Quero esta</button>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="date-card reveal">
+        <span class="date-off">-18% OFF</span>
+        <div class="date-month">Setembro 2027</div>
+        <div class="date-when">01/09 → 07/09</div>
+        <div class="date-price">
+          <div class="old">de R$7.200,00</div>
+          <div class="inst">12x <small>de</small> R$490,83</div>
+          <div class="cash">ou R$5.890,00 à vista</div>
+        </div>
+        <div class="date-actions">
+          <button class="btn btn-line js-roteiro" data-data="01/09 a 07/09 de 2027">Ver roteiro</button>
+          <button class="btn btn-wa js-quero" data-data="01/09 a 07/09 de 2027">Quero esta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INCLUSO ============ -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">Tudo resolvido</span>
+    <h2 class="section-title reveal">O que está incluso na viagem</h2>
+    <div class="inc-grid">
+      <div class="card-inc inc-yes reveal">
+        <h3>✅ Já está tudo incluso</h3>
+        <ul class="inc-list">
+          <li><span class="ic">✓</span> Passagens aéreas</li>
+          <li><span class="ic">✓</span> Translado aeroporto ↔ Barreirinhas ↔ aeroporto</li>
+          <li><span class="ic">✓</span> Hospedagem</li>
+          <li><span class="ic">✓</span> Café da manhã</li>
+          <li><span class="ic">✓</span> Guiamento local durante toda a viagem</li>
+          <li><span class="ic">✓</span> Acompanhamento de um guia RoadTrip021</li>
+          <li><span class="ic">✓</span> Todos os passeios citados no roteiro</li>
+        </ul>
+      </div>
+      <div class="card-inc inc-no reveal">
+        <h3>❌ Não incluso</h3>
+        <ul class="inc-list">
+          <li><span class="ic">✕</span> Passeios não mencionados no roteiro</li>
+          <li><span class="ic">✕</span> Entradas nos parques</li>
+          <li><span class="ic">✕</span> Refeições não citadas e despesas pessoais</li>
+        </ul>
+        <p style="font-size:.85rem;margin-top:1rem;color:var(--ink-soft)">As taxas de entrada nos atrativos, quando houver, são pagas diretamente no local.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREÇO ============ -->
+<section class="preco">
+  <div class="wrap">
+    <span class="eyebrow reveal" style="color:#fff">Investimento</span>
+    <h2 class="section-title reveal">Uma experiência completa por um valor justo</h2>
+    <div class="preco-card reveal">
+      <span class="off-tag">18% OFF • promocional</span>
+      <div class="old">de R$7.200,00</div>
+      <div class="big">12x <small>de</small> R$490<small>,83</small></div>
+      <div class="cash">ou <strong>R$5.890,00</strong> à vista • quartos compartilhados (triplo ou quádruplo)</div>
+      <div class="pills">
+        <span>💳 PIX ou cartão em até 12x</span>
+        <span>📅 PIX parcelado até 30 dias antes</span>
+        <span>🛏️ Individual/casal sob consulta</span>
+      </div>
+      <button class="btn btn-wa js-vaga" style="margin-inline:auto">Falar com um especialista</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROVA SOCIAL ============ -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">Quem já viajou com a gente</span>
+    <h2 class="section-title reveal">+10 mil viajantes não erram</h2>
+    <div class="trust-grid">
+      <div class="tcard reveal"><div class="stars">★★★★★</div><p>"Viagem impecável do início ao fim. As lagoas dos Lençóis são de outro mundo e não precisei me preocupar com nada."</p><div class="who">— Camila R.</div></div>
+      <div class="tcard reveal"><div class="stars">★★★★★</div><p>"Organização nota 10, guias atenciosos e um grupo que virou família. O quadriciclo nas dunas foi inesquecível."</p><div class="who">— Rodrigo M.</div></div>
+      <div class="tcard reveal"><div class="stars">★★★★★</div><p>"A RoadTrip cuidou de cada detalhe. Vale cada centavo. Já estou de olho na próxima expedição!"</p><div class="who">— Júlia A.</div></div>
+    </div>
+    <p style="text-align:center;margin-top:1.5rem;font-size:.84rem;color:var(--ink-soft)">* Depoimentos ilustrativos — substitua pelos reais do Google/Instagram da RoadTrip021.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq">
+  <div class="wrap" style="max-width:760px">
+    <span class="eyebrow reveal">Dúvidas frequentes</span>
+    <h2 class="section-title reveal" style="margin-bottom:.5rem">Antes de garantir sua vaga</h2>
+    <details class="faq-item reveal"><summary>De onde saem os voos?</summary><p>O destino final é São Luís (MA), com translado até Barreirinhas. O embarque é organizado pela RoadTrip021 — fale com a gente no WhatsApp para confirmar a saída da sua data.</p></details>
+    <details class="faq-item reveal"><summary>Como funciona o pagamento?</summary><p>PIX ou cartão de crédito em até 12x. No PIX parcelado, você reserva pelo site e parcela até 30 dias antes da viagem. A viagem precisa estar totalmente quitada até 30 dias antes do embarque.</p></details>
+    <details class="faq-item reveal"><summary>O que é o Pacote Promocional (Viagem Flexível)?</summary><p>São tarifas aéreas especiais obtidas com flexibilidade de datas. A viagem pode ocorrer até 5 dias antes (D-5) ou 5 dias depois (D+5) da data informada. A data final é confirmada com até 7 dias de antecedência para você se planejar com conforto.</p></details>
+    <details class="faq-item reveal"><summary>Quanto de bagagem posso levar?</summary><p>Bolsa ou mochila de até 10kg (45x35x20) + mala pequena de até 12kg (55x35x25), conforme regras da companhia aérea. Detalhes completos no termo de adesão.</p></details>
+    <details class="faq-item reveal"><summary>Posso ir em quarto individual ou de casal?</summary><p>Sim! O valor base é em quarto compartilhado (triplo ou quádruplo). Opções de quarto individual ou casal estão disponíveis mediante consulta no WhatsApp.</p></details>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="section-title reveal">Bora pro deserto azul?</h2>
+    <p class="reveal">Escolha sua data, fale com um especialista e garanta sua vaga nos Lençóis Maranhenses 2027.</p>
+    <button class="btn btn-orange js-vaga reveal" style="margin-inline:auto">Quero garantir minha vaga</button>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="brand"><span class="b1">ROADTRIP</span><span class="b2">021</span></div>
+    <p>Há 5 anos conectando pessoas e destinos pelo Brasil. +10 mil viajantes.</p>
+    <p style="margin-top:1rem">📍 R. Sete de Setembro, 71 — sala 1501, Centro, Rio de Janeiro/RJ</p>
+    <p style="margin-top:.4rem"><a href="https://wa.me/5521975125378" target="_blank" rel="noopener">Fale no WhatsApp</a> • <a href="https://www.roadtrip021.com.br/termos-de-adesao" target="_blank" rel="noopener">Termos de adesão</a></p>
+    <p style="margin-top:1.3rem;font-size:.8rem;opacity:.6">© 2026 RoadTrip021 — Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<!-- Barra fixa mobile -->
+<div class="mobile-cta">
+  <button class="btn btn-orange js-vaga">Garantir minha vaga nos Lençóis</button>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+
+    <!-- PANE ROTEIRO -->
+    <div class="pane" id="paneRoteiro">
+      <div class="mhead">
+        <div class="mdate" id="rotDate">Saída</div>
+        <div class="anton">Roteiro • 7 dias</div>
+      </div>
+      <div class="mbody">
+        <div class="rt-day"><div class="rt-num">1</div><div><h5>Chegada em São Luís</h5><p>Translado até Barreirinhas e check-in na hospedagem.</p></div></div>
+        <div class="rt-day"><div class="rt-num">2</div><div><h5>Lagoa Azul e Lagoa Bonita</h5><p>Exploração das lagoas entre as dunas, com tempo livre para fotos e relaxamento.</p></div></div>
+        <div class="rt-day"><div class="rt-num">3</div><div><h5>Atins</h5><p>Vila charmosa de paisagens deslumbrantes e passeio de barco.</p></div></div>
+        <div class="rt-day"><div class="rt-num">4</div><div><h5>Quadriciclo até Caburé</h5><p>Emocionante trilha de quadriciclo pelas dunas até a vila de Caburé.</p></div></div>
+        <div class="rt-day"><div class="rt-num">5</div><div><h5>Santo Amaro</h5><p>Visita a uma das partes mais preservadas do parque — um refúgio natural.</p></div></div>
+        <div class="rt-day"><div class="rt-num">6</div><div><h5>Conexão com a natureza</h5><p>Dia em meio ao paraíso natural, com tarde livre.</p></div></div>
+        <div class="rt-day"><div class="rt-num">7</div><div><h5>Retorno</h5><p>Retorno a São Luís e embarque para o Rio de Janeiro.</p></div></div>
+        <button class="btn btn-wa" id="roteiroToForm">Quero esta vaga</button>
+      </div>
+    </div>
+
+    <!-- PANE FORMULÁRIO -->
+    <div class="pane" id="paneForm">
+      <div class="fhead">
+        <div class="anton">Falar com um especialista</div>
+        <p>Preencha seus dados e fale agora no WhatsApp. Vagas limitadas por saída.</p>
+        <div class="fdate-chip">🗓️ Interesse: <span id="formDateLabel">—</span></div>
+      </div>
+      <form class="lead-form" id="leadForm">
+        <div class="field"><label for="nome">Nome completo</label><input type="text" id="nome" placeholder="Seu nome" required></div>
+        <div class="field"><label for="telefone">Número (WhatsApp)</label><input type="tel" id="telefone" placeholder="(21) 90000-0000" required></div>
+        <div class="field"><label for="email">E-mail</label><input type="email" id="email" placeholder="seu@email.com" required></div>
+        <div class="field"><label for="expedicao">Data de interesse</label>
+          <select id="expedicao" required>
+            <option value="25/05 a 31/05 de 2027">25/05 a 31/05 de 2027</option>
+            <option value="24/07 a 30/07 de 2027">24/07 a 30/07 de 2027</option>
+            <option value="01/08 a 07/08 de 2027">01/08 a 07/08 de 2027</option>
+            <option value="01/09 a 07/09 de 2027">01/09 a 07/09 de 2027</option>
+            <option value="Ainda não decidi">Ainda não decidi / quero ajuda</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-wa" id="submitBtn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zM6.597 20.13c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.607z"/></svg>
+          Falar no WhatsApp
+        </button>
+        <div class="form-status" id="formStatus"></div>
+        <p class="form-note">🔒 Seus dados estão seguros. Sem spam — só o contato sobre a sua viagem.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const WHATSAPP   = "5521975125378";
+const SHEETS_URL = "COLE_AQUI_A_URL_DO_SEU_GOOGLE_APPS_SCRIPT";
+
+/* ===== Elementos ===== */
+const modal      = document.getElementById('modal');
+const paneRot    = document.getElementById('paneRoteiro');
+const paneForm   = document.getElementById('paneForm');
+const rotDate    = document.getElementById('rotDate');
+const formLabel  = document.getElementById('formDateLabel');
+const expSelect  = document.getElementById('expedicao');
+let   currentDate = "Ainda não decidi";
+
+/* ===== Abrir/fechar modal ===== */
+function lockScroll(on){ document.body.style.overflow = on ? 'hidden' : ''; }
+function showPane(which){
+  paneRot.classList.toggle('active', which==='roteiro');
+  paneForm.classList.toggle('active', which==='form');
+  modal.querySelector('.modal-card').scrollTop = 0;
+}
+function setDate(d){
+  currentDate = d || "Ainda não decidi";
+  rotDate.textContent   = "Saída " + currentDate;
+  formLabel.textContent = currentDate;
+  [...expSelect.options].forEach(o=>{ if(o.value===currentDate) expSelect.value=currentDate; });
+}
+function openModal(which, date){
+  if(date!==undefined) setDate(date);
+  showPane(which);
+  modal.classList.add('open');
+  lockScroll(true);
+}
+function closeModal(){ modal.classList.remove('open'); lockScroll(false); }
+
+/* ===== Eventos dos CTAs ===== */
+// "Garantir minha vaga / Quero minha vaga / Falar com especialista" -> rola até as datas
+document.querySelectorAll('.js-vaga').forEach(b=>b.addEventListener('click',()=>{
+  document.getElementById('datas').scrollIntoView({behavior:'smooth'});
+}));
+// "Ver roteiro" -> abre modal no roteiro daquela saída
+document.querySelectorAll('.js-roteiro').forEach(b=>b.addEventListener('click',()=>openModal('roteiro', b.dataset.data)));
+// "Quero esta" -> abre formulário já com a data
+document.querySelectorAll('.js-quero').forEach(b=>b.addEventListener('click',()=>openModal('form', b.dataset.data)));
+// Dentro do roteiro: "Quero esta vaga" -> vai pro formulário mantendo a data
+document.getElementById('roteiroToForm').addEventListener('click',()=>showPane('form'));
+// Fechar
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ===== Envio: Google Sheets -> WhatsApp ===== */
+const form=document.getElementById('leadForm');
+const statusEl=document.getElementById('formStatus');
+const btn=document.getElementById('submitBtn');
+
+form.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const nome=document.getElementById('nome').value.trim();
+  const telefone=document.getElementById('telefone').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const expedicao=expSelect.value;
+
+  btn.disabled=true;
+  statusEl.textContent="Enviando... abrindo o WhatsApp 🌊";
+
+  const payload={ nome, telefone, email, expedicao, destino:"Lençóis Maranhenses" };
+
+  try{
+    if(SHEETS_URL && !SHEETS_URL.startsWith("COLE_AQUI")){
+      await fetch(SHEETS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    }
+  }catch(err){ console.warn("Falha ao salvar na planilha:",err); }
+
+  const msg=`Olá! Vim pela página dos *Lençóis Maranhenses* 🌊%0A%0A`+
+            `*Nome:* ${encodeURIComponent(nome)}%0A`+
+            `*E-mail:* ${encodeURIComponent(email)}%0A`+
+            `*Data de interesse:* ${encodeURIComponent(expedicao)}%0A%0A`+
+            `Quero garantir minha vaga!`;
+  setTimeout(()=>{ window.location.href=`https://wa.me/${WHATSAPP}?text=${msg}`; },350);
+});
+
+/* ===== Reveal no scroll ===== */
+const io=new IntersectionObserver((es)=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.07)+'s';io.observe(el);});
+</script>
+</body>
+</html>
